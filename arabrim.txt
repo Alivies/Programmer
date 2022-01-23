@@ -1,0 +1,176 @@
+ /*********************************************
+ * Автор: Поздняков Д.А.                      *
+ * Дата: 22.11.2021                           *
+ * Блок - Блок 03: 03 Перевод арабских чисел  *
+ *********************************************/
+
+
+
+#include <iostream>
+#include <string> 
+#include <fstream> 
+#include <stdio.h>
+
+using namespace std;
+
+int option() {
+    int operationStyle;
+    
+    cout << "1: Арабские > Римские" << endl;
+    cout << "2: Римские > Арабские" << endl;
+    cout << "Введите значение от 1 до 2 выбрав тип операции: ";
+    cin >> operationStyle;
+    cout << endl;
+    
+    return operationStyle;
+}
+
+int arab() {
+    int arabic;
+    
+    cout << "Введите арабское число: ";
+    cin >> arabic;
+    return arabic;
+}
+
+string rim() {
+    string rimnum;
+    
+    cout << "Введите римское число: ";
+    cin >> rimnum;
+    return rimnum;
+}
+
+string codeArab(int arabic) {
+    string rimnum = "";
+    while (arabic > 0) {
+        if (arabic >= 1000) {
+            arabic -= 1000;
+            rimnum += "M";
+        } else if (arabic >= 900) {
+            arabic -= 900;
+            rimnum += "CM";
+        } else if (arabic >= 500) {
+            arabic -= 500;
+            rimnum += "D";
+        } else if (arabic >= 400) {
+            arabic -= 400;
+            rimnum += "CD";
+        } else if (arabic >= 100) {
+            arabic -= 100;
+            rimnum += "C";
+        } else if (arabic >= 90) {
+            arabic -= 90;
+            rimnum += "XC";
+        } else if (arabic >= 50) {
+            arabic -= 50;
+            rimnum += "L";
+        } else if (arabic >= 40) {
+            arabic -= 40;
+            rimnum += "XL";
+        } else if (arabic >= 10) {
+            arabic -= 10;
+            rimnum += "X";
+        } else if (arabic >= 9) {
+            arabic -= 9;
+            rimnum += "IX";
+        } else if (arabic >= 5) {
+            arabic -= 5;
+            rimnum += "V";
+        } else if (arabic >= 4) {
+            arabic -= 4;
+            rimnum += "IV";
+        } else {
+            arabic -= 1;
+            rimnum += "I";
+        }
+    }
+    return rimnum;
+}
+
+int codeRim(string rimnum) {
+    int arabic = 0;
+    int Rim = rimnum.length();
+    
+    char previousSymbol = '-';
+    for (int symbolValue = 0; symbolValue < Rim; ++symbolValue) {
+        char symbol = rimnum[symbolValue];
+        if (symbol == 'M') {
+            if (previousSymbol == 'C') {
+                arabic -= 100;
+                arabic += 900;;
+            } else {
+                arabic += 1000;
+            }
+            previousSymbol = 'M';
+        } else if (symbol == 'C') {
+            if (previousSymbol == 'X') {
+                arabic -= 10;
+                arabic += 90;;
+            } else {
+                arabic += 100;
+            }
+            previousSymbol = 'C';
+        } else if (symbol == 'D') {
+            if (previousSymbol == 'C') {
+                arabic -= 100;
+                arabic += 400;;
+            } else {
+                arabic += 500;
+            }
+            previousSymbol = 'D';
+        } else if (symbol == 'L') {
+            if (previousSymbol == 'X') {
+                arabic -= 10;
+                arabic += 40;;
+            } else {
+                arabic += 50;
+            }
+            previousSymbol = 'L';
+        } else if (symbol == 'X') {
+            if (previousSymbol == 'I') {
+                arabic -= 1;
+                arabic += 9;;
+            } else {
+                arabic += 10;
+            }
+            previousSymbol = 'X';
+        } else if (symbol == 'V') {
+            if (previousSymbol == 'I') {
+                arabic -= 1;
+                arabic += 4;;
+            } else {
+                arabic += 5;
+            }
+            previousSymbol = 'V';
+        } else if (symbol == 'I') {
+            arabic += 1;
+            previousSymbol = 'I';
+        }
+    }
+    
+    return arabic;
+}
+
+int main() {
+    setlocale(LC_ALL, "ru");
+    
+    int operationStyle = option();
+    
+    if (operationStyle == 1) {
+        int arabic = arab();
+        string rimnum = codeArab(arabic);
+        cout << "Римское число: " << rimnum;
+    
+    } else if (operationStyle == 2) {
+        string rimnum = rim();
+        int arabic = codeRim(rimnum);
+        cout << "Арабское число: " << arabic;
+    
+    } else {
+        cout << "Ошибка! Неверные входные данные";
+    }
+    
+    return 0;
+}
+https://onlinegdb.com/lq1x4yJZu
